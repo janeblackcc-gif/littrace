@@ -73,7 +73,7 @@ try {
 
 后端从 `backend/.env` 读取配置。全新开发数据库在应用启动时创建表；已有数据库升级前应备份并核对 [数据库变更脚本](../deploy/001_kb_identity.sql)，表结构创建不会替代已有表的升级。
 
-启动后访问 `http://localhost:8000/docs`；`http://localhost:8000/hello` 仅用于确认 API 基础连通，不代表所有依赖已通过健康检查。
+启动后访问 `http://localhost:8000/docs` 查看接口文档，`http://localhost:8000/hello` 可以快速确认 API 已经启动。
 
 ## 4. 启动前端
 
@@ -117,7 +117,7 @@ if ($LASTEXITCODE -ne 0) { throw '状态与证据约束验证失败' }
 if ($LASTEXITCODE -ne 0) { throw '研究方向约束验证失败' }
 ```
 
-离线回归不代替真实模型调用或部署验收。完整的离线回归列表和真实服务验收脚本见 [验证说明](VERIFICATION.md)，工具入口位于 [tools/acceptance](../tools/acceptance)。
+完整的离线回归列表，以及连接真实服务的验收脚本，见 [验证说明](VERIFICATION.md)，工具入口位于 [tools/acceptance](../tools/acceptance)。
 
 | 现象 | 检查方向 |
 | --- | --- |

@@ -4,7 +4,7 @@
 
 ## 离线回归
 
-`run_offline_acceptance.py` 会先注入只用于导入的假配置，再把 SQLAlchemy 连接、`requests` 和 `httpx` 的发送方法替换成直接报错，所以下列脚本一旦尝试访问网络或数据库就会失败。六个脚本合计 214 项检查，在 [GitHub Actions](../.github/workflows/ci.yml) 上随每次推送运行。
+`run_offline_acceptance.py` 会先注入只用于导入的假配置，再拦截 SQLAlchemy 连接以及 `requests`、`httpx` 的发送方法，保证下列测试完全离线、结果可复现。六个脚本合计 214 项检查，在 [GitHub Actions](../.github/workflows/ci.yml) 上随每次推送运行。
 
 | 脚本 | 覆盖内容 | 断言数 |
 | --- | --- | --- |
