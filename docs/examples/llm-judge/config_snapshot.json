@@ -1,0 +1,286 @@
+{
+  "run_config_hash": "f2531eb4c6090260a4f4352d1d076caea31460e0c5c81a29abbae25cb960559d",
+  "pipeline_version": "queue-stages/2",
+  "evidence_semantics_version": "evidence-semantics/4",
+  "research_config": {
+    "max_charts": 2,
+    "max_iterations": 1,
+    "quality_threshold": 6.0,
+    "enable_code_execution": false,
+    "max_searches_per_section": 3
+  },
+  "run_flags": {
+    "ENABLE_DOCMIND": true,
+    "FULLTEXT_TIMEOUT": 25,
+    "ENABLE_WEB_SEARCH": true,
+    "FULLTEXT_MAX_BYTES": 4000000,
+    "FULLTEXT_MAX_CHARS": 60000,
+    "LLM_ENABLE_THINKING": false,
+    "EVIDENCE_TOTAL_CHARS": 40000,
+    "LLM_REASONING_EFFORT": "high",
+    "ENABLE_FULLTEXT_FETCH": true,
+    "EVIDENCE_EXCERPT_CHARS": 12000,
+    "ACADEMIC_INCLUDE_DOMAINS": "",
+    "FULLTEXT_PER_QUERY_LIMIT": 3,
+    "ENABLE_DIRECTION_PROFILES": true,
+    "REPORTED_SCOPE_MIN_FIELDS": 2,
+    "HYPOTHESIS_INDEPENDENT_THRESHOLD": 2
+  },
+  "run_models": {
+    "scout": "qwen3.7-flash",
+    "critic": "deepseek-v4.1-flash",
+    "wizard": "deepseek-v4.1-flash",
+    "writer": "deepseek-v4.1-flash",
+    "architect": "deepseek-v4.1-flash",
+    "data_analyst": "deepseek-v4.1-flash"
+  },
+  "resolved_direction": {
+    "model": null,
+    "profile": {
+      "id": "llm_evaluation",
+      "name": "LLM 评测与 Judge 可靠性",
+      "scope": "AI_CS_empirical",
+      "facets": [
+        {
+          "id": "agreement_protocol",
+          "question": "模型评审与怎样的人类标注协议比较，一致性指标是什么？",
+          "claim_type_ids": [
+            "judge_agreement"
+          ]
+        },
+        {
+          "id": "bias_controls",
+          "question": "顺序等受控变量是否造成评审偏差，怎样排除混杂因素？",
+          "claim_type_ids": [
+            "controlled_bias"
+          ]
+        }
+      ],
+      "claim_types": [
+        {
+          "id": "judge_agreement",
+          "family": "judge_agreement",
+          "missing_fields": "insufficient_evidence",
+          "comparison_mode": "protocol_agreement",
+          "required_conditions": [
+            "task",
+            "dataset",
+            "judge_model",
+            "judge_prompt",
+            "human_protocol",
+            "sample_size",
+            "agreement_metric"
+          ],
+          "comparison_conditions": [
+            "task",
+            "dataset",
+            "judge_model",
+            "judge_prompt",
+            "agreement_metric"
+          ],
+          "required_evidence_blocks": [
+            "method",
+            "results",
+            "annotation_protocol"
+          ]
+        },
+        {
+          "id": "controlled_bias",
+          "family": "judge_bias",
+          "missing_fields": "insufficient_evidence",
+          "comparison_mode": "same_setting",
+          "required_conditions": [
+            "task",
+            "judge_model",
+            "controlled_factor",
+            "randomization",
+            "sample_size",
+            "metric"
+          ],
+          "comparison_conditions": [],
+          "required_evidence_blocks": [
+            "method",
+            "results",
+            "annotation_protocol"
+          ]
+        }
+      ],
+      "description": "聚焦自动评审与人工协议的一致性、受控偏差实验及适用边界，不默认人工标签是真理。",
+      "seed_queries": [
+        "LLM as a judge reliability",
+        "LLM judge human agreement",
+        "position bias LLM evaluation",
+        "benchmark contamination evaluation"
+      ],
+      "source_policy": {
+        "source_checks": [
+          "人工标注协议与样本量必须明确",
+          "偏差实验需要受控变量与随机化",
+          "一致性指标不等同于事实正确率"
+        ],
+        "global_policy_ref": "ai_cs_empirical/v2",
+        "required_source_blocks": [
+          "method",
+          "results",
+          "annotation_protocol"
+        ],
+        "preferred_document_types": [
+          "primary_research",
+          "benchmark",
+          "survey"
+        ]
+      },
+      "schema_version": "direction-profile/2"
+    },
+    "input_hash": "d9495a268d37f99cdfa9d2877b3d192ae055b465d0d3ce8e8fb89c299b231723",
+    "rule_origin": "preset",
+    "profile_hash": "f3f5212f0bb9f1ed5078ea6665634c95953b1926f5675e9c9104c40f19c01634",
+    "field_origins": {
+      "global_policy": "global",
+      "profile.facets": "preset",
+      "profile.claim_types": "preset",
+      "profile.seed_queries": "preset",
+      "profile.source_policy": "preset"
+    },
+    "global_policy": {
+      "id": "ai_cs_empirical/v2",
+      "preprints": "include_and_label",
+      "locator_binding": "required",
+      "version_binding": "required",
+      "unknown_peer_review": "label_unknown",
+      "unknown_independence": "do_not_count",
+      "abstract_only_support": false,
+      "allow_rule_relaxation": false,
+      "missing_required_evidence": "insufficient_evidence",
+      "secondary_counts_as_independent": false
+    },
+    "prompt_version": "direction-inference/2",
+    "validation_status": "contract_valid_not_expert_validated"
+  },
+  "research_plan": {
+    "sections": [
+      {
+        "id": "agreement_protocol_operationalization",
+        "title": "一致性协议的可操作化：标注流程、样本量与指标选择",
+        "facet_ids": [
+          "agreement_protocol"
+        ],
+        "description": "核验 LLM-as-judge 与人工判断一致性时，人工标注协议如何被定义（标注者数量、培训、分歧解决、是否盲评）、样本量如何报告、一致性指标（Cohen's kappa、Krippendorff's alpha、Spearman/Pearson 相关、准确率）如何选择与解释。重点区分“与单个人工标签一致”和“与人工共识一致”，并检查是否把一致性误读为事实正确率。",
+        "claim_type_ids": [
+          "judge_agreement"
+        ],
+        "requires_chart": false,
+        "search_queries": [
+          "LLM as a judge human agreement annotation protocol kappa",
+          "LLM judge agreement sample size confidence interval",
+          "human annotation protocol inter-annotator agreement LLM evaluation",
+          "LLM as a judge reliability 2022-2025 自动评审（LLM-as-judge）与人工判断的一致性取决于哪些标注与评审协议？",
+          "position bias LLM evaluation 2022-2025 自动评审（LLM-as-judge）与人工判断的一致性取决于哪些标注与评审协议？"
+        ],
+        "research_questions": [
+          "不同研究采用的人工标注协议（标注者数量、是否盲评、分歧解决方式）如何影响所报告的一致性数值？",
+          "一致性指标的选择（kappa vs. 相关系数 vs. 准确率）是否与任务类型和标签分布相匹配？",
+          "样本量是否足以支撑所报告的一致性置信区间？"
+        ],
+        "focus_angle_indices": [],
+        "required_conditions": [
+          "task",
+          "dataset",
+          "judge_model",
+          "judge_prompt",
+          "human_protocol",
+          "sample_size",
+          "agreement_metric"
+        ]
+      },
+      {
+        "id": "bias_controls_randomization",
+        "title": "受控偏差与随机化：顺序、位置与提示敏感性",
+        "facet_ids": [
+          "bias_controls"
+        ],
+        "description": "核验顺序/位置等受控变量是否在 LLM 评审中造成系统性偏差，以及研究是否通过随机化、配对设计或反事实提示来排除混杂因素。检查偏差实验是否报告受控因子、随机化方式、样本量与效应量，并区分“偏差存在”与“偏差影响最终一致性结论”两类论断。",
+        "claim_type_ids": [
+          "controlled_bias"
+        ],
+        "requires_chart": false,
+        "search_queries": [
+          "position bias LLM judge controlled experiment randomization",
+          "order bias LLM evaluation pairwise comparison",
+          "prompt sensitivity LLM as judge controlled factor",
+          "LLM judge human agreement 2022-2025 自动评审（LLM-as-judge）与人工判断的一致性取决于哪些标注与评审协议？",
+          "benchmark contamination evaluation 2022-2025 自动评审（LLM-as-judge）与人工判断的一致性取决于哪些标注与评审协议？"
+        ],
+        "research_questions": [
+          "顺序/位置等受控变量在何种任务与评审提示下产生可复现的偏差？",
+          "随机化或配对设计是否足以排除提示措辞、候选顺序等混杂因素？",
+          "偏差效应量是否大到足以改变与人工判断的一致性结论？"
+        ],
+        "focus_angle_indices": [],
+        "required_conditions": [
+          "task",
+          "judge_model",
+          "controlled_factor",
+          "randomization",
+          "sample_size",
+          "metric"
+        ]
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "h1_protocol_specification_drives_agreement",
+        "content": "在相同任务与评审模型下，人工标注协议越明确（标注者数量、培训、分歧解决、盲评），所报告的一致性数值越稳定且可复现；协议不明确的研究更可能报告偏高或不可比的一致性。",
+        "conditions": {
+          "task": null,
+          "dataset": null,
+          "judge_model": null,
+          "sample_size": null,
+          "judge_prompt": null,
+          "human_protocol": "需明确标注者数量、培训、分歧解决与盲评状态",
+          "agreement_metric": null
+        },
+        "claim_type_id": "judge_agreement",
+        "refutation_query": "LLM judge human agreement no correlation with annotation protocol detail"
+      },
+      {
+        "id": "h2_randomization_reduces_bias_effect",
+        "content": "在报告了随机化或配对设计的受控偏差实验中，顺序/位置偏差的效应量小于未报告随机化的实验；但偏差是否改变最终一致性结论取决于任务与指标。",
+        "conditions": {
+          "task": null,
+          "metric": null,
+          "judge_model": null,
+          "sample_size": null,
+          "randomization": "需报告随机化或配对设计",
+          "controlled_factor": "顺序或位置"
+        },
+        "claim_type_id": "controlled_bias",
+        "refutation_query": "position bias LLM judge randomization no effect on effect size"
+      },
+      {
+        "id": "h3_metric_mismatch_inflates_agreement",
+        "content": "当标签分布不均衡时，使用准确率而非 kappa/alpha 报告一致性会系统性高估 LLM 评审与人工判断的一致性。",
+        "conditions": {
+          "task": null,
+          "dataset": "标签分布不均衡",
+          "judge_model": null,
+          "sample_size": null,
+          "judge_prompt": null,
+          "human_protocol": null,
+          "agreement_metric": "准确率 vs. kappa/alpha"
+        },
+        "claim_type_id": "judge_agreement",
+        "refutation_query": "accuracy kappa agreement LLM judge imbalanced labels no difference"
+      }
+    ],
+    "profile_hash": "f3f5212f0bb9f1ed5078ea6665634c95953b1926f5675e9c9104c40f19c01634",
+    "schema_version": "research-plan/2",
+    "explicit_unknowns": [
+      "各研究是否报告人工标注者间一致性（IAA）作为基线，未知。",
+      "评审提示的具体措辞与版本是否在论文中完整给出，未知。",
+      "样本量是否足以支撑所报告一致性指标的置信区间，未知。",
+      "偏差实验是否报告效应量与置信区间，未知。",
+      "是否存在跨任务可迁移的一致性结论，未知。"
+    ]
+  }
+}

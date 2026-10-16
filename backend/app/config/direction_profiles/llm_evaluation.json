@@ -1,0 +1,95 @@
+{
+  "schema_version": "direction-profile/2",
+  "id": "llm_evaluation",
+  "name": "LLM 评测与 Judge 可靠性",
+  "scope": "AI_CS_empirical",
+  "description": "聚焦自动评审与人工协议的一致性、受控偏差实验及适用边界，不默认人工标签是真理。",
+  "seed_queries": [
+    "LLM as a judge reliability",
+    "LLM judge human agreement",
+    "position bias LLM evaluation",
+    "benchmark contamination evaluation"
+  ],
+  "claim_types": [
+    {
+      "id": "judge_agreement",
+      "family": "judge_agreement",
+      "required_conditions": [
+        "task",
+        "dataset",
+        "judge_model",
+        "judge_prompt",
+        "human_protocol",
+        "sample_size",
+        "agreement_metric"
+      ],
+      "required_evidence_blocks": [
+        "method",
+        "results",
+        "annotation_protocol"
+      ],
+      "missing_fields": "insufficient_evidence",
+      "comparison_mode": "protocol_agreement",
+      "comparison_conditions": [
+        "task",
+        "dataset",
+        "judge_model",
+        "judge_prompt",
+        "agreement_metric"
+      ]
+    },
+    {
+      "id": "controlled_bias",
+      "family": "judge_bias",
+      "required_conditions": [
+        "task",
+        "judge_model",
+        "controlled_factor",
+        "randomization",
+        "sample_size",
+        "metric"
+      ],
+      "required_evidence_blocks": [
+        "method",
+        "results",
+        "annotation_protocol"
+      ],
+      "missing_fields": "insufficient_evidence",
+      "comparison_mode": "same_setting"
+    }
+  ],
+  "source_policy": {
+    "global_policy_ref": "ai_cs_empirical/v2",
+    "preferred_document_types": [
+      "primary_research",
+      "benchmark",
+      "survey"
+    ],
+    "required_source_blocks": [
+      "method",
+      "results",
+      "annotation_protocol"
+    ],
+    "source_checks": [
+      "人工标注协议与样本量必须明确",
+      "偏差实验需要受控变量与随机化",
+      "一致性指标不等同于事实正确率"
+    ]
+  },
+  "facets": [
+    {
+      "id": "agreement_protocol",
+      "question": "模型评审与怎样的人类标注协议比较，一致性指标是什么？",
+      "claim_type_ids": [
+        "judge_agreement"
+      ]
+    },
+    {
+      "id": "bias_controls",
+      "question": "顺序等受控变量是否造成评审偏差，怎样排除混杂因素？",
+      "claim_type_ids": [
+        "controlled_bias"
+      ]
+    }
+  ]
+}

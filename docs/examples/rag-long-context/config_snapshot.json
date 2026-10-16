@@ -1,0 +1,301 @@
+{
+  "run_config_hash": "488246620def93cc445b6408096524f2d47fd9fd1674d8975c0f44bb0f518c46",
+  "pipeline_version": "queue-stages/2",
+  "evidence_semantics_version": "evidence-semantics/4",
+  "research_config": {
+    "max_charts": 2,
+    "max_iterations": 1,
+    "quality_threshold": 6.0,
+    "enable_code_execution": false,
+    "max_searches_per_section": 3
+  },
+  "run_flags": {
+    "ENABLE_DOCMIND": true,
+    "FULLTEXT_TIMEOUT": 25,
+    "ENABLE_WEB_SEARCH": true,
+    "FULLTEXT_MAX_BYTES": 4000000,
+    "FULLTEXT_MAX_CHARS": 60000,
+    "LLM_ENABLE_THINKING": false,
+    "EVIDENCE_TOTAL_CHARS": 40000,
+    "LLM_REASONING_EFFORT": "high",
+    "ENABLE_FULLTEXT_FETCH": true,
+    "EVIDENCE_EXCERPT_CHARS": 12000,
+    "ACADEMIC_INCLUDE_DOMAINS": "",
+    "FULLTEXT_PER_QUERY_LIMIT": 3,
+    "ENABLE_DIRECTION_PROFILES": true,
+    "REPORTED_SCOPE_MIN_FIELDS": 2,
+    "HYPOTHESIS_INDEPENDENT_THRESHOLD": 2
+  },
+  "run_models": {
+    "scout": "qwen3.7-flash",
+    "critic": "deepseek-v4.1-flash",
+    "wizard": "deepseek-v4.1-flash",
+    "writer": "deepseek-v4.1-flash",
+    "architect": "deepseek-v4.1-flash",
+    "data_analyst": "deepseek-v4.1-flash"
+  },
+  "resolved_direction": {
+    "model": null,
+    "profile": {
+      "id": "rag_context",
+      "name": "RAG 与长上下文边界",
+      "scope": "AI_CS_empirical",
+      "facets": [
+        {
+          "id": "retrieval_budget",
+          "question": "检索质量、切片与上下文预算怎样影响同任务比较？",
+          "claim_type_ids": [
+            "retrieval_boundary"
+          ]
+        },
+        {
+          "id": "cost_scope",
+          "question": "性能与成本结论适用于何种模型、资源和工作负载？",
+          "claim_type_ids": [
+            "resource_tradeoff"
+          ]
+        }
+      ],
+      "claim_types": [
+        {
+          "id": "retrieval_boundary",
+          "family": "retrieval_comparison",
+          "missing_fields": "insufficient_evidence",
+          "comparison_mode": "cross_dataset",
+          "required_conditions": [
+            "task",
+            "dataset",
+            "model",
+            "corpus_version",
+            "retriever",
+            "chunk_size",
+            "top_k",
+            "context_budget",
+            "metric"
+          ],
+          "comparison_conditions": [
+            "task",
+            "model",
+            "corpus_version",
+            "retriever",
+            "chunk_size",
+            "top_k",
+            "context_budget",
+            "metric"
+          ],
+          "required_evidence_blocks": [
+            "method",
+            "results",
+            "experiment_setup"
+          ]
+        },
+        {
+          "id": "resource_tradeoff",
+          "family": "cost_quality",
+          "missing_fields": "insufficient_evidence",
+          "comparison_mode": "same_setting",
+          "required_conditions": [
+            "task",
+            "model",
+            "input_tokens",
+            "output_tokens",
+            "latency_definition",
+            "hardware_or_price_date",
+            "metric"
+          ],
+          "comparison_conditions": [],
+          "required_evidence_blocks": [
+            "method",
+            "results",
+            "experiment_setup"
+          ]
+        }
+      ],
+      "description": "聚焦检索增强与长上下文的可比实验、输入预算、检索质量和成本约束。",
+      "seed_queries": [
+        "retrieval augmented generation long context",
+        "RAG versus long-context evaluation",
+        "retrieval granularity benchmark",
+        "RAG cost quality tradeoff"
+      ],
+      "source_policy": {
+        "source_checks": [
+          "固定 corpus 与模型版本",
+          "对齐检索与输入上下文预算",
+          "成本必须有价格日期或硬件条件"
+        ],
+        "global_policy_ref": "ai_cs_empirical/v2",
+        "required_source_blocks": [
+          "method",
+          "experiment_setup",
+          "results",
+          "table"
+        ],
+        "preferred_document_types": [
+          "primary_research",
+          "benchmark",
+          "survey"
+        ]
+      },
+      "schema_version": "direction-profile/2"
+    },
+    "input_hash": "cdd61a7c974591d90968642689d5cce5be217a3d02907784945a0aa31ac868f6",
+    "rule_origin": "preset",
+    "profile_hash": "3681bea81b986bdb77c2d1f94b314af1df478276a1c3848a9c664765e101182f",
+    "field_origins": {
+      "global_policy": "global",
+      "profile.facets": "preset",
+      "profile.claim_types": "preset",
+      "profile.seed_queries": "preset",
+      "profile.source_policy": "preset"
+    },
+    "global_policy": {
+      "id": "ai_cs_empirical/v2",
+      "preprints": "include_and_label",
+      "locator_binding": "required",
+      "version_binding": "required",
+      "unknown_peer_review": "label_unknown",
+      "unknown_independence": "do_not_count",
+      "abstract_only_support": false,
+      "allow_rule_relaxation": false,
+      "missing_required_evidence": "insufficient_evidence",
+      "secondary_counts_as_independent": false
+    },
+    "prompt_version": "direction-inference/2",
+    "validation_status": "contract_valid_not_expert_validated"
+  },
+  "research_plan": {
+    "sections": [
+      {
+        "id": "retrieval_budget_boundary",
+        "title": "检索预算与切片粒度如何划定 RAG 与长上下文的可比边界",
+        "facet_ids": [
+          "retrieval_budget"
+        ],
+        "description": "在固定任务、模型版本与语料版本的前提下，核验检索质量、切片大小、top-k 与输入上下文预算如何共同决定 RAG 相对长上下文方法的性能边界；所有比较必须对齐输入预算与评测指标，缺失条件按 insufficient_evidence 处理。",
+        "claim_type_ids": [
+          "retrieval_boundary"
+        ],
+        "requires_chart": false,
+        "search_queries": [
+          "retrieval augmented generation long context comparison chunk size top-k context budget",
+          "RAG versus long-context QA aligned input budget benchmark",
+          "retrieval granularity long document question answering empirical",
+          "retrieval augmented generation long context 2022-2025 RAG 与长上下文在长文档问答上的边界：检索与长上下文方法的实证对比",
+          "retrieval granularity benchmark 2022-2025 RAG 与长上下文在长文档问答上的边界：检索与长上下文方法的实证对比"
+        ],
+        "research_questions": [
+          "在相同任务、模型与语料版本下，检索质量（recall/precision）与切片粒度如何改变 RAG 相对长上下文方法的性能差？",
+          "当输入上下文预算被对齐时，top-k 与 chunk_size 的何种组合会使 RAG 与长上下文方法的性能差消失或反转？",
+          "不同评测指标（如 answer accuracy、faithfulness、evidence recall）下，检索预算对边界结论的影响是否一致？"
+        ],
+        "focus_angle_indices": [],
+        "required_conditions": [
+          "task",
+          "dataset",
+          "model",
+          "corpus_version",
+          "retriever",
+          "chunk_size",
+          "top_k",
+          "context_budget",
+          "metric"
+        ]
+      },
+      {
+        "id": "cost_scope_tradeoff",
+        "title": "性能与成本结论的适用模型、资源与工作负载范围",
+        "facet_ids": [
+          "cost_scope"
+        ],
+        "description": "核验 RAG 与长上下文方法在输入/输出 token、延迟定义、硬件或价格日期等条件下的成本-质量权衡结论；所有成本结论必须绑定价格日期或硬件条件，且比较需在同一设置下进行，否则标记为 insufficient_evidence。",
+        "claim_type_ids": [
+          "resource_tradeoff"
+        ],
+        "requires_chart": false,
+        "search_queries": [
+          "RAG long context cost quality tradeoff input tokens latency",
+          "retrieval augmented generation inference cost benchmark price date",
+          "long context versus RAG token cost workload empirical",
+          "RAG versus long-context evaluation 2022-2025 RAG 与长上下文在长文档问答上的边界：检索与长上下文方法的实证对比",
+          "RAG cost quality tradeoff 2022-2025 RAG 与长上下文在长文档问答上的边界：检索与长上下文方法的实证对比"
+        ],
+        "research_questions": [
+          "在相同任务与模型下，RAG 与长上下文方法的输入 token、输出 token 与延迟定义如何影响单位质量成本？",
+          "成本-质量结论在何种硬件或价格日期条件下成立，跨条件外推的边界在哪里？",
+          "不同工作负载（文档长度分布、查询频率、并发）下，RAG 与长上下文的成本优势是否发生反转？"
+        ],
+        "focus_angle_indices": [],
+        "required_conditions": [
+          "task",
+          "model",
+          "input_tokens",
+          "output_tokens",
+          "latency_definition",
+          "hardware_or_price_date",
+          "metric"
+        ]
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "h1_retrieval_quality_boundary",
+        "content": "在固定任务、模型版本与语料版本下，当检索 recall 低于某一阈值时，长上下文方法在长文档问答上优于 RAG；当检索 recall 高于该阈值且输入上下文预算对齐时，RAG 达到或超过长上下文方法。",
+        "conditions": {
+          "task": null,
+          "model": null,
+          "top_k": null,
+          "metric": null,
+          "dataset": null,
+          "retriever": null,
+          "chunk_size": null,
+          "context_budget": null,
+          "corpus_version": null
+        },
+        "claim_type_id": "retrieval_boundary",
+        "refutation_query": "retrieval augmented generation long context no difference aligned budget high recall"
+      },
+      {
+        "id": "h2_chunk_topk_interaction",
+        "content": "在输入上下文预算对齐的条件下，chunk_size 与 top-k 的交互会改变 RAG 与长上下文方法的性能排序：较小 chunk 配合较大 top-k 在证据分散任务上缩小差距，而较大 chunk 配合较小 top-k 在证据集中任务上保持优势。",
+        "conditions": {
+          "task": null,
+          "model": null,
+          "top_k": null,
+          "metric": null,
+          "dataset": null,
+          "retriever": null,
+          "chunk_size": null,
+          "context_budget": null,
+          "corpus_version": null
+        },
+        "claim_type_id": "retrieval_boundary",
+        "refutation_query": "chunk size top-k interaction no effect RAG long context aligned budget"
+      },
+      {
+        "id": "h3_cost_quality_scope",
+        "content": "在相同任务与模型下，RAG 的单位质量成本优势仅在输入 token 预算受限且检索质量足够高时成立；当长上下文模型的输入价格下降或延迟定义改变时，该优势可能消失或反转。",
+        "conditions": {
+          "task": null,
+          "model": null,
+          "metric": null,
+          "input_tokens": null,
+          "output_tokens": null,
+          "latency_definition": null,
+          "hardware_or_price_date": null
+        },
+        "claim_type_id": "resource_tradeoff",
+        "refutation_query": "RAG cost advantage disappears long context price drop latency definition"
+      }
+    ],
+    "profile_hash": "3681bea81b986bdb77c2d1f94b314af1df478276a1c3848a9c664765e101182f",
+    "schema_version": "research-plan/2",
+    "explicit_unknowns": [
+      "具体任务与数据集未在方向中指定，需在检索时按 primary_research 或 benchmark 来源确定。",
+      "模型版本与语料版本未指定，所有比较必须绑定版本，否则标记 insufficient_evidence。",
+      "检索器类型、chunk_size、top-k 与 context_budget 的具体取值未指定，需从来源中提取或保留 null。",
+      "成本结论所需的硬件或价格日期未指定，缺失时不得外推。",
+      "是否存在跨数据集可复现的边界阈值尚未知，需实证核验。"
+    ]
+  }
+}

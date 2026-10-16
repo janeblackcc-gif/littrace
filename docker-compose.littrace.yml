@@ -1,0 +1,54 @@
+# LitTrace 独立测试库。
+# 为什么不复用 gsk_pg：它未映射宿主端口（宿主不可达），且 gsk 库属其他项目，
+# 共享实例上 DROP DATABASE 有连带风险。
+#
+# 用法（口令从 .env 读取，缺失则 compose 直接报错，不静默用默认值）：
+#   docker compose -f docker-compose.littrace.yml up -d
+#   docker exec -i littrace-pg psql -U littrace -d littrace_dev -f - < deploy/001_kb_identity.sql
+services:
+  littrace-pg:
+    image: postgres:15-alpine
+    container_name: littrace-pg
+    environment:
+      POSTGRES_USER: littrace
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}
+      POSTGRES_DB: littrace_dev
+    # 为什么必须设 idle_session_timeout：
+    #   执行器用 pg_try_advisory_lock 做「同会话唯一执行者」互斥，锁**随连接存在**。
+    #   若 worker 被 SIGKILL（或容器/宿主异常），客户端来不及关闭连接，而 PG 默认
+    #   idle_session_timeout=0（禁用）时，该 backend 会长期存活并继续持有 advisory 锁，
+    #   于是**该会话再也无法 resume**（新执行者永远拿到 RunBusy）。
+    #   —— 实测：kill 掉持锁进程后 pg_locks 里该锁仍在；即使 OS 进程已消失。
+    #   —— 实测：设 idle_session_timeout 后，真正 idle 的持锁连接被回收、锁随之释放。
+    #   取 600s（10 分钟）：远大于正常请求间隔，又能兜住崩溃遗留。
+    #   注意不要设得太小，否则会误杀正常空闲连接。
+    #   （tcp_keepalives_* 试过但未生效：该镜像下 command 传入仍为 0/default，
+    #     且 keepalive 需要 2 小时以上才可能探活，对恢复无实际帮助。）
+    command: ["postgres", "-c", "idle_session_timeout=600000"]
+    ports:
+      # 只绑回环：5433 避开其他项目占用的 5432，且不暴露到局域网。
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - littrace_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U littrace -d littrace_dev"]
+      interval: 5s
+      retries: 10
+
+  # 本项目需要 Redis（取消标志、会话窗口），宿主 5433/6379 均避开其他项目占用。
+  # 不复用 gsk_redis：它未映射宿主端口，从宿主不可达。
+  littrace-redis:
+    image: redis:7-alpine
+    container_name: littrace-redis
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - littrace_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  littrace_pgdata:
+  littrace_redisdata:

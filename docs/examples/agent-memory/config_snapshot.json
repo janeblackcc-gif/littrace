@@ -1,0 +1,269 @@
+{
+  "run_config_hash": "1b785fbaa60c8a960f362ac4316dc96a7360bd806629704b4084a14d863cdf81",
+  "pipeline_version": "queue-stages/2",
+  "evidence_semantics_version": "evidence-semantics/4",
+  "research_config": {
+    "max_charts": 2,
+    "max_iterations": 1,
+    "quality_threshold": 6.0,
+    "enable_code_execution": false,
+    "max_searches_per_section": 3
+  },
+  "run_flags": {
+    "ENABLE_DOCMIND": true,
+    "FULLTEXT_TIMEOUT": 25,
+    "ENABLE_WEB_SEARCH": true,
+    "FULLTEXT_MAX_BYTES": 4000000,
+    "FULLTEXT_MAX_CHARS": 60000,
+    "LLM_ENABLE_THINKING": false,
+    "EVIDENCE_TOTAL_CHARS": 40000,
+    "LLM_REASONING_EFFORT": "high",
+    "ENABLE_FULLTEXT_FETCH": true,
+    "EVIDENCE_EXCERPT_CHARS": 12000,
+    "ACADEMIC_INCLUDE_DOMAINS": "",
+    "FULLTEXT_PER_QUERY_LIMIT": 3,
+    "ENABLE_DIRECTION_PROFILES": true,
+    "REPORTED_SCOPE_MIN_FIELDS": 2,
+    "HYPOTHESIS_INDEPENDENT_THRESHOLD": 2
+  },
+  "run_models": {
+    "scout": "qwen3.7-flash",
+    "critic": "deepseek-v4.1-flash",
+    "wizard": "deepseek-v4.1-flash",
+    "writer": "deepseek-v4.1-flash",
+    "architect": "deepseek-v4.1-flash",
+    "data_analyst": "deepseek-v4.1-flash"
+  },
+  "resolved_direction": {
+    "model": null,
+    "profile": {
+      "id": "agent_memory",
+      "name": "Agent 记忆与上下文管理",
+      "scope": "AI_CS_empirical",
+      "facets": [
+        {
+          "id": "representation",
+          "question": "记忆正文与检索键如何组织，粒度结论依赖什么条件？",
+          "claim_type_ids": [
+            "memory_granularity"
+          ]
+        },
+        {
+          "id": "retention",
+          "question": "压缩损失与长期一致性怎样测量，哪些任务没有验证？",
+          "claim_type_ids": [
+            "memory_compression"
+          ]
+        }
+      ],
+      "claim_types": [
+        {
+          "id": "memory_granularity",
+          "family": "memory_retention",
+          "missing_fields": "insufficient_evidence",
+          "comparison_mode": "same_setting",
+          "required_conditions": [
+            "task",
+            "dataset",
+            "model",
+            "memory_key",
+            "memory_value",
+            "history_length",
+            "retrieval_budget",
+            "metric"
+          ],
+          "comparison_conditions": [],
+          "required_evidence_blocks": [
+            "method",
+            "results",
+            "experiment_setup"
+          ]
+        },
+        {
+          "id": "memory_compression",
+          "family": "compression_tradeoff",
+          "missing_fields": "insufficient_evidence",
+          "comparison_mode": "same_setting",
+          "required_conditions": [
+            "task",
+            "dataset",
+            "model",
+            "compression_method",
+            "compression_ratio",
+            "context_budget",
+            "metric"
+          ],
+          "comparison_conditions": [],
+          "required_evidence_blocks": [
+            "method",
+            "results",
+            "experiment_setup"
+          ]
+        }
+      ],
+      "description": "聚焦长程交互中的记忆正文、检索键、粒度与压缩条件，不等同于所有长上下文方法。",
+      "seed_queries": [
+        "LLM agent memory",
+        "long-term conversational memory",
+        "memory retrieval granularity",
+        "agent memory compression"
+      ],
+      "source_policy": {
+        "source_checks": [
+          "区分 memory key 与 value",
+          "核对时间顺序与跨会话测试",
+          "不得把用户事实抽取等同于独立验证"
+        ],
+        "global_policy_ref": "ai_cs_empirical/v2",
+        "required_source_blocks": [
+          "method",
+          "experiment_setup",
+          "results"
+        ],
+        "preferred_document_types": [
+          "primary_research",
+          "benchmark",
+          "survey"
+        ]
+      },
+      "schema_version": "direction-profile/2"
+    },
+    "input_hash": "894e3462416519fb07b34135b58f34a4f5b8e6450524908875ed695b96dc2129",
+    "rule_origin": "preset",
+    "profile_hash": "6ab34ba17475a52172b8d7b887a300c6d328416f81edd7885cba5b8e53ca5b9e",
+    "field_origins": {
+      "global_policy": "global",
+      "profile.facets": "preset",
+      "profile.claim_types": "preset",
+      "profile.seed_queries": "preset",
+      "profile.source_policy": "preset"
+    },
+    "global_policy": {
+      "id": "ai_cs_empirical/v2",
+      "preprints": "include_and_label",
+      "locator_binding": "required",
+      "version_binding": "required",
+      "unknown_peer_review": "label_unknown",
+      "unknown_independence": "do_not_count",
+      "abstract_only_support": false,
+      "allow_rule_relaxation": false,
+      "missing_required_evidence": "insufficient_evidence",
+      "secondary_counts_as_independent": false
+    },
+    "prompt_version": "direction-inference/2",
+    "validation_status": "contract_valid_not_expert_validated"
+  },
+  "research_plan": {
+    "sections": [
+      {
+        "id": "granularity_conditions",
+        "title": "会话/轮次/事实粒度的效果条件核验",
+        "facet_ids": [
+          "representation"
+        ],
+        "description": "核验记忆粒度（会话级、轮次级、事实级）在长程对话问答中的效果，必须绑定任务、数据集、模型、记忆键、记忆值、历史长度、检索预算与指标；区分记忆键与记忆值，核对时间顺序与跨会话测试。",
+        "claim_type_ids": [
+          "memory_granularity"
+        ],
+        "requires_chart": false,
+        "search_queries": [
+          "conversational memory granularity session turn fact long-term dialogue QA",
+          "memory key value retrieval granularity long conversation benchmark",
+          "fact-level vs turn-level memory retrieval budget long-term dialogue",
+          "LLM agent memory 2022-2025 长程对话问答中，记忆的会话/轮次/事实粒度以及记忆压缩，效果依赖哪些条件？",
+          "memory retrieval granularity 2022-2025 长程对话问答中，记忆的会话/轮次/事实粒度以及记忆压缩，效果依赖哪些条件？"
+        ],
+        "research_questions": [
+          "会话级、轮次级、事实级记忆在何种任务、数据集、模型、历史长度与检索预算下产生可复现的效果差异？",
+          "记忆键与记忆值的组织方式如何影响粒度结论，是否在跨会话时间顺序测试中被验证？"
+        ],
+        "focus_angle_indices": [],
+        "required_conditions": [
+          "task",
+          "dataset",
+          "model",
+          "memory_key",
+          "memory_value",
+          "history_length",
+          "retrieval_budget",
+          "metric"
+        ]
+      },
+      {
+        "id": "compression_retention_conditions",
+        "title": "记忆压缩损失与长期一致性的测量条件",
+        "facet_ids": [
+          "retention"
+        ],
+        "description": "核验记忆压缩方法在长程对话问答中的压缩损失与长期一致性，必须绑定任务、数据集、模型、压缩方法、压缩比、上下文预算与指标；识别哪些任务未验证长期一致性，不得把用户事实抽取等同于独立验证。",
+        "claim_type_ids": [
+          "memory_compression"
+        ],
+        "requires_chart": false,
+        "search_queries": [
+          "memory compression long-term dialogue consistency evaluation",
+          "context budget compression ratio conversational QA retention",
+          "summarization compression long conversation consistency benchmark",
+          "long-term conversational memory 2022-2025 长程对话问答中，记忆的会话/轮次/事实粒度以及记忆压缩，效果依赖哪些条件？",
+          "agent memory compression 2022-2025 长程对话问答中，记忆的会话/轮次/事实粒度以及记忆压缩，效果依赖哪些条件？"
+        ],
+        "research_questions": [
+          "不同压缩方法与压缩比在何种任务、数据集、模型、上下文预算与指标下保持长期一致性？",
+          "哪些任务或指标没有验证压缩后的长期一致性，现有证据是否足以支持压缩无损的结论？"
+        ],
+        "focus_angle_indices": [],
+        "required_conditions": [
+          "task",
+          "dataset",
+          "model",
+          "compression_method",
+          "compression_ratio",
+          "context_budget",
+          "metric"
+        ]
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "h_granularity_effect_conditions",
+        "content": "在长程对话问答中，事实级记忆相比会话级或轮次级记忆在需要跨会话事实召回的任务上效果更好，但该优势依赖检索预算、历史长度与记忆键/记忆值的组织方式；当检索预算充足或历史长度较短时，粒度差异可能不显著。",
+        "conditions": {
+          "task": null,
+          "model": null,
+          "metric": null,
+          "dataset": null,
+          "memory_key": null,
+          "memory_value": null,
+          "history_length": null,
+          "retrieval_budget": null
+        },
+        "claim_type_id": "memory_granularity",
+        "refutation_query": "fact-level memory not better than session-level long-term dialogue QA same retrieval budget"
+      },
+      {
+        "id": "h_compression_tradeoff_conditions",
+        "content": "记忆压缩在长程对话问答中会引入长期一致性损失，损失程度依赖压缩方法、压缩比、上下文预算与任务类型；在事实密集或时间顺序敏感的任务上，高压缩比可能导致可测量的性能下降。",
+        "conditions": {
+          "task": null,
+          "model": null,
+          "metric": null,
+          "dataset": null,
+          "context_budget": null,
+          "compression_ratio": null,
+          "compression_method": null
+        },
+        "claim_type_id": "memory_compression",
+        "refutation_query": "memory compression no consistency loss long-term dialogue QA high compression ratio"
+      }
+    ],
+    "profile_hash": "6ab34ba17475a52172b8d7b887a300c6d328416f81edd7885cba5b8e53ca5b9e",
+    "schema_version": "research-plan/2",
+    "explicit_unknowns": [
+      "各粒度结论是否在相同任务、数据集、模型、历史长度与检索预算下可比，尚需逐篇核对。",
+      "记忆键与记忆值的具体组织方式在多数研究中未统一报告，可能影响粒度结论。",
+      "压缩后的长期一致性测量指标与跨会话时间顺序测试是否充分，尚不明确。",
+      "用户事实抽取是否被独立验证，还是仅作为记忆构建步骤，需区分。",
+      "预印本与未知同行评审状态的文献需标注，其证据强度待评估。"
+    ]
+  }
+}

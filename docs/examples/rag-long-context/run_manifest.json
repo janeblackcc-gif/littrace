@@ -1,0 +1,92 @@
+{
+  "session_id": "d107b5c3-b086-4537-8383-f67728c0a16a",
+  "exported_at_utc": "2026-09-22T07:48:07+00:00",
+  "hash_algorithm": "sha256(utf-8 text), hex",
+  "run": {
+    "run_status": "completed",
+    "quality_status": "needs_review",
+    "quality_score": 5.5,
+    "next_stage": "done",
+    "iteration": 3,
+    "unresolved_issues": 8,
+    "report_chars": 8073,
+    "report_hash": "b79af2834d8aeddc18f8b362edb323155d640a9916365addd2082dc6effcac25",
+    "recomputed_report_hash": "b79af2834d8aeddc18f8b362edb323155d640a9916365addd2082dc6effcac25",
+    "reviewed_report_hash": "b79af2834d8aeddc18f8b362edb323155d640a9916365addd2082dc6effcac25",
+    "run_config_hash": "488246620def93cc445b6408096524f2d47fd9fd1674d8975c0f44bb0f518c46",
+    "run_id": "fdd35b92bb93",
+    "run_history": [
+      {
+        "run_id": "fdd35b92bb93",
+        "status": "completed",
+        "ended_at": "2026-09-22T02:27:36+00:00",
+        "started_at": "2026-09-22T02:14:22+00:00",
+        "start_stage": "plan",
+        "terminal_event": "research_complete"
+      }
+    ],
+    "last_terminal_event": {
+      "at": "2026-09-22T02:27:36+00:00",
+      "type": "research_complete",
+      "run_id": "fdd35b92bb93",
+      "event_seq": 80
+    },
+    "evidence_semantics_version": "evidence-semantics/4",
+    "pipeline_version": "queue-stages/2",
+    "state_version": "research-state/2",
+    "direction_profile_hash": "3681bea81b986bdb77c2d1f94b314af1df478276a1c3848a9c664765e101182f",
+    "direction_origin": "preset",
+    "usage": {
+      "scope": "six_agents_base_call_llm_only",
+      "call_count": 27,
+      "total_tokens": 333169,
+      "prompt_tokens": 245098,
+      "completion_tokens": 88071,
+      "unknown_usage_calls": 0
+    }
+  },
+  "counts": {
+    "delivered_sources": 14,
+    "delivered_content_chars": 140036,
+    "facts": 32,
+    "evidence_links": 33,
+    "claims": 3,
+    "deferred_sources": 126,
+    "source_audit": 28,
+    "ui_report_chars": 8073,
+    "ui_report_matches_report": true
+  },
+  "metadata_snapshot": {
+    "sources_with_metadata_provenance": 14,
+    "sources_without_metadata_provenance": 0,
+    "missing_examples": [],
+    "note": "当次运行的元数据依据已随材料落库",
+    "posthoc_metadata": []
+  },
+  "files": {
+    "final_report.md": {
+      "bytes": 16068,
+      "sha256": "b79af2834d8aeddc18f8b362edb323155d640a9916365addd2082dc6effcac25"
+    },
+    "ui_report.txt": {
+      "bytes": 16068,
+      "sha256": "b79af2834d8aeddc18f8b362edb323155d640a9916365addd2082dc6effcac25"
+    },
+    "delivered_sources.jsonl": {
+      "bytes": 210517,
+      "sha256": "2dbcccdf4c043d01c4d56e05efc8ee6c62a2ebac9ca2a16378b4c77717683d9d"
+    },
+    "facts.jsonl": {
+      "bytes": 34662,
+      "sha256": "644cb50d8f14e5422b2a0bb8c7373441a6f3ac77d8e8764932eab18b1635282a"
+    },
+    "evidence_links.jsonl": {
+      "bytes": 75828,
+      "sha256": "6f4c20255fb4152cf6fe8f006694a3dded8f76848995afe7329e121f4e71f67a"
+    },
+    "claims.jsonl": {
+      "bytes": 10165,
+      "sha256": "eb4aaaaee50b1b692d9790419d97c9e56610f34ed938e1f3f3ded513bcd52e73"
+    }
+  }
+}

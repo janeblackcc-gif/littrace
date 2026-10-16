@@ -1,0 +1,102 @@
+{
+  "schema_version": "direction-profile/2",
+  "id": "rag_context",
+  "name": "RAG 与长上下文边界",
+  "scope": "AI_CS_empirical",
+  "description": "聚焦检索增强与长上下文的可比实验、输入预算、检索质量和成本约束。",
+  "seed_queries": [
+    "retrieval augmented generation long context",
+    "RAG versus long-context evaluation",
+    "retrieval granularity benchmark",
+    "RAG cost quality tradeoff"
+  ],
+  "claim_types": [
+    {
+      "id": "retrieval_boundary",
+      "family": "retrieval_comparison",
+      "required_conditions": [
+        "task",
+        "dataset",
+        "model",
+        "corpus_version",
+        "retriever",
+        "chunk_size",
+        "top_k",
+        "context_budget",
+        "metric"
+      ],
+      "required_evidence_blocks": [
+        "method",
+        "results",
+        "experiment_setup"
+      ],
+      "missing_fields": "insufficient_evidence",
+      "comparison_mode": "cross_dataset",
+      "comparison_conditions": [
+        "task",
+        "model",
+        "corpus_version",
+        "retriever",
+        "chunk_size",
+        "top_k",
+        "context_budget",
+        "metric"
+      ]
+    },
+    {
+      "id": "resource_tradeoff",
+      "family": "cost_quality",
+      "required_conditions": [
+        "task",
+        "model",
+        "input_tokens",
+        "output_tokens",
+        "latency_definition",
+        "hardware_or_price_date",
+        "metric"
+      ],
+      "required_evidence_blocks": [
+        "method",
+        "results",
+        "experiment_setup"
+      ],
+      "missing_fields": "insufficient_evidence",
+      "comparison_mode": "same_setting"
+    }
+  ],
+  "source_policy": {
+    "global_policy_ref": "ai_cs_empirical/v2",
+    "preferred_document_types": [
+      "primary_research",
+      "benchmark",
+      "survey"
+    ],
+    "required_source_blocks": [
+      "method",
+      "experiment_setup",
+      "results",
+      "table"
+    ],
+    "source_checks": [
+      "固定 corpus 与模型版本",
+      "对齐检索与输入上下文预算",
+      "成本必须有价格日期或硬件条件"
+    ]
+  },
+  "facets": [
+    {
+      "id": "retrieval_budget",
+      "question": "检索质量、切片与上下文预算怎样影响同任务比较？",
+      "claim_type_ids": [
+        "retrieval_boundary"
+      ]
+    },
+    {
+      "id": "cost_scope",
+      "question": "性能与成本结论适用于何种模型、资源和工作负载？",
+      "claim_type_ids": [
+        "resource_tradeoff"
+      ]
+    }
+  ]
+}

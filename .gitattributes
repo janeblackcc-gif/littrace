@@ -1,0 +1,2 @@
+# Exported run artifacts are hashed byte-for-byte in run_manifest.json; keep line endings as-is.
+docs/examples/** -text

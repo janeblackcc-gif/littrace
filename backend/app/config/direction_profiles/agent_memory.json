@@ -1,0 +1,90 @@
+{
+  "schema_version": "direction-profile/2",
+  "id": "agent_memory",
+  "name": "Agent 记忆与上下文管理",
+  "scope": "AI_CS_empirical",
+  "description": "聚焦长程交互中的记忆正文、检索键、粒度与压缩条件，不等同于所有长上下文方法。",
+  "seed_queries": [
+    "LLM agent memory",
+    "long-term conversational memory",
+    "memory retrieval granularity",
+    "agent memory compression"
+  ],
+  "claim_types": [
+    {
+      "id": "memory_granularity",
+      "family": "memory_retention",
+      "required_conditions": [
+        "task",
+        "dataset",
+        "model",
+        "memory_key",
+        "memory_value",
+        "history_length",
+        "retrieval_budget",
+        "metric"
+      ],
+      "required_evidence_blocks": [
+        "method",
+        "results",
+        "experiment_setup"
+      ],
+      "missing_fields": "insufficient_evidence",
+      "comparison_mode": "same_setting"
+    },
+    {
+      "id": "memory_compression",
+      "family": "compression_tradeoff",
+      "required_conditions": [
+        "task",
+        "dataset",
+        "model",
+        "compression_method",
+        "compression_ratio",
+        "context_budget",
+        "metric"
+      ],
+      "required_evidence_blocks": [
+        "method",
+        "results",
+        "experiment_setup"
+      ],
+      "missing_fields": "insufficient_evidence",
+      "comparison_mode": "same_setting"
+    }
+  ],
+  "source_policy": {
+    "global_policy_ref": "ai_cs_empirical/v2",
+    "preferred_document_types": [
+      "primary_research",
+      "benchmark",
+      "survey"
+    ],
+    "required_source_blocks": [
+      "method",
+      "experiment_setup",
+      "results"
+    ],
+    "source_checks": [
+      "区分 memory key 与 value",
+      "核对时间顺序与跨会话测试",
+      "不得把用户事实抽取等同于独立验证"
+    ]
+  },
+  "facets": [
+    {
+      "id": "representation",
+      "question": "记忆正文与检索键如何组织，粒度结论依赖什么条件？",
+      "claim_type_ids": [
+        "memory_granularity"
+      ]
+    },
+    {
+      "id": "retention",
+      "question": "压缩损失与长期一致性怎样测量，哪些任务没有验证？",
+      "claim_type_ids": [
+        "memory_compression"
+      ]
+    }
+  ]
+}

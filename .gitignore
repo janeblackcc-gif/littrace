@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Build outputs
+frontend/dist/
+
+# Langfuse (third-party)
+langfuse/
+
+# Cache
+.cache/
+*.cache
+USER_ACTION.md
+
+# --- 本地安全/备份（勿提交）---
+.env
+_purge_backup/
+*.bak
+*_backup_*/
+littrace-backup-*/
+# 凭证轮换期间的临时工件：含【旧】凭证/旧密钥，仅供轮换后做「旧值已失效」验证，
+# 验证完成应立即删除，任何时候都不得提交。
+.rotate-*.json
+.rotate-old-secrets.json
+
+
+# --- 合并自 deploy/gitignore.fragment ---
+# 有意做成可合并片段；它不会把【已提交】的文件移出跟踪。
+.env.*
+!.env.example
+*.pem
+*.key
+debug_logs/
+.littrace-backups/
+local_corpus/
+
