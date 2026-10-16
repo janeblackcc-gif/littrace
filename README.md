@@ -127,8 +127,6 @@ python tools/acceptance/run_offline_acceptance.py tools/acceptance/verify_integr
 | [前端](frontend/src) | 研究工作台、SSE 消费与状态展示 |
 | [验收工具](tools/acceptance) | 离线回归、故障注入、运行产物导出 |
 
-## 项目来源与范围
-
-本项目以训练营课程中的行业信息助手项目为起点，迁移到文献调研场景。沿用的课程文件保留了原有的版权声明；迁移阶段新增的核心模块包括 `research_integrity.py`、`research_sources.py`、`research_runtime.py`、`research_control.py`、`checkpoint_guard.py`、`kb_binding.py`、`direction_contracts.py`、`runtime_settings.py` 和 `tools/acceptance` 下的验收脚本。
+## 适用范围
 
 当前完成的是限定 AI/CS 场景的工程 MVP：引文定位、来源追溯和流程恢复已经实现并有回归脚本，语义支持关系和复杂条件匹配仍需人工复核。代码执行扩展默认关闭，没有隔离沙箱。后续的语义评测计划见 [ROADMAP](docs/ROADMAP.md)。
